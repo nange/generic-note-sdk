@@ -1,0 +1,20 @@
+{
+  "author": {
+    "name": "LanceLi",
+    "url": "http://github.com/nange",
+    "email": "463499510@qq.com"
+  },
+  "name": "GenericNote",
+  "main": "GenericNote.js",
+  "description": "nodejs sdk for yun note openapi",
+  "version": "0.0.1",
+  "repository": {
+    "url": "https://github.com/nange/generic-note-sdk",
+    "type": "git"
+  },
+  "dependencies": {
+    "evernote": "~1.25.3",
+    "ynote": "*",
+    "express": "4.x"
+  }
+}
