@@ -1,9 +1,11 @@
 /**
  * Module dependencies. 
  */
-var express = require('express');
+var co          = require('co');
+var thunk       = require('thunkify');
+var express     = require('express');
 var GenericNote = require('./lib/GenericNote.js');
-var config = require('./config.js');
+var config      = require('./config.js');
 
 var app = express();
 
@@ -64,18 +66,25 @@ app.get('/get_firstnote', function(req, res) {
 
 app.get('/get_user', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  // var getUser = thunk(genNote.getUser);
+  var getUser = function() {
+    return function(cb) {
+      genNote.getUser(cb);
+    }
+  }
 
-  genNote.getUser(function(err, user) {
-    if (err) {
+  co(function* () {
+    try {
+      var user = yield getUser();
+      console.log('userName: ' + user.userName 
+        + ' createdTime: ' + user.createdTime 
+        + ' updatedTime: ' + user.updatedTime + '\n');
+      res.send('get user success');
+    } catch (e) {
       console.log(err);
       res.send('get user err');
-      return;
     }
-    console.log('userName: ' + user.userName 
-      + ' createdTime: ' + user.createdTime 
-      + ' updatedTime: ' + user.updatedTime + '\n');
-    res.send('get user success');
-  });
+  })();
 
 });
 
