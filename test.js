@@ -11,71 +11,60 @@ var app = express();
 
 app.get('/list_notebook', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var listAllNotebooks = thunk(genNote.listAllNotebooks);
 
-  genNote.listAllNotebooks(function(err, books) {
-    if (err) {
+  co(function* () {
+    try {
+      var books = yield listAllNotebooks.call(genNote);
+
+      books.forEach(function(value, index) {
+        console.log('notebook name: ' + value.name
+          + ' notebook uid: ' + value.uid + '\n');
+      });
+
+      res.send('get noteBooks success');
+
+    } catch (e) {
       console.log(err);
       res.send('get noteBooks error');
-      return;
     }
 
-    books.forEach(function(value, index) {
-      console.log('notebook name: ' + value.name 
-        + ' notebook uid: ' + value.uid + '\n');
-    });
-
-    res.send('get noteBooks success');
-  });
+  })();
 
 });
 
 app.get('/get_firstnote', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
 
-  genNote.listAllNotebooks(function(err, books) {
-    if (err) {
-      console.log(err);
-      res.send('get noteBooks error');
-      return;
+  var listAllNotebooks = thunk(genNote.listAllNotebooks);
+  var listNoteUidsFromBook = thunk(genNote.listNoteUidsFromBook);
+  var getNote = thunk(genNote.getNote);
+
+  co(function* () {
+    try {
+      var books = yield listAllNotebooks.call(genNote);
+      var noteUidsList = yield listNoteUidsFromBook.call(genNote, books[0].uid);
+      var note = yield getNote.call(genNote, noteUidsList[0]);
+
+      console.log('fist note title: ' + note.title + '\n');
+      res.send('get first note success');
+
+    } catch (e) {
+      console.log(e);
+      res.send('get note error');
     }
 
-    genNote.listNoteUidsFromBook(books[0].uid, function(err, noteUidsList) {
-      if (err) {
-        console.log(err);
-        res.send('get noteUids error');
-        return;
-      }
-
-      genNote.getNote(noteUidsList[0], function(err, note) {
-        if (err) {
-          console.log(err);
-          res.send('get note error');
-          return;
-        }
-
-        console.log('fist note title: ' + note.title + '\n');
-
-        res.send('get first note success');
-      });
-
-    });
-
-  });
+  })();
 
 });
 
 app.get('/get_user', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
-  // var getUser = thunk(genNote.getUser);
-  var getUser = function() {
-    return function(cb) {
-      genNote.getUser(cb);
-    }
-  }
+  var getUser = thunk(genNote.getUser);
 
   co(function* () {
     try {
-      var user = yield getUser();
+      var user = yield getUser.call(genNote);
       console.log('userName: ' + user.userName 
         + ' createdTime: ' + user.createdTime 
         + ' updatedTime: ' + user.updatedTime + '\n');
