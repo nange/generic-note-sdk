@@ -1,4 +1,4 @@
-# generic-note-sdk
+# Generic Note Sdk
 
 NodeJs通用云笔记数据访问SDK
 
@@ -91,3 +91,36 @@ NodeJs通用云笔记数据访问SDK
     <td>Timestamp</td>
   </tr>
 </table>
+
+## 安装
+
+```
+$ npm install generic-note
+```
+
+## API
+
+### getUser(callback(err, user))
+
+  获取当前user信息。
+
+
+### getNote(uid [,opts], callback(err, note))
+
+  根据uid获取一篇笔记内容。
+  其中opts为可选参数，可传的值有：
+  *opts.withContent
+  *opts.withResourcesData
+  *opts.withResourcesRecognition
+  *opts.withResourcesAlternateData
+
+
+### listNoteUidsFromBook(bookUid, callback(err, noteUidsList))
+
+  根据bookUid获取其下所有note uid列表。
+
+
+### listAllNotebooks(callback(err, booklist))
+
+  获取所有notebook列表。
+
