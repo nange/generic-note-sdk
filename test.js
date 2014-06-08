@@ -4,8 +4,8 @@
 var co          = require('co');
 var thunk       = require('thunkify');
 var express     = require('express');
-var GenericNote = require('./lib/GenericNote.js');
-var config      = require('./config.js');
+var GenericNote = require('./lib/GenericNote');
+var config      = require('./config');
 
 var app = express();
 
@@ -69,8 +69,9 @@ app.get('/get_user', function(req, res) {
         + ' createdTime: ' + user.createdTime 
         + ' updatedTime: ' + user.updatedTime + '\n');
       res.send('get user success');
+
     } catch (e) {
-      console.log(err);
+      console.log(e);
       res.send('get user err');
     }
   })();
