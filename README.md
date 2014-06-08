@@ -109,10 +109,11 @@ $ npm install generic-note
 
   根据uid获取一篇笔记内容。
   其中opts为可选参数，可传的值有：
-  *opts.withContent
-  *opts.withResourcesData
-  *opts.withResourcesRecognition
-  *opts.withResourcesAlternateData
+
+  * opts.withContent
+  * opts.withResourcesData
+  * opts.withResourcesRecognition
+  * opts.withResourcesAlternateData
 
 
 ### listNoteUidsFromBook(bookUid, callback(err, noteUidsList))
