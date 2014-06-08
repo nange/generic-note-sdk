@@ -46,3 +46,48 @@ NodeJs通用云笔记数据访问SDK
   </tr>
 </table>
 
+### notebook
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+  </tr>
+  <tr>
+    <td>uid</td>
+    <td>string</td>
+  </tr>
+  <tr>
+    <td>name</td>
+    <td>string</td>
+  </tr>
+  <tr>
+    <td>createdTime</td>
+    <td>Timestamp</td>
+  </tr>
+  <tr>
+    <td>updatedTime</td>
+    <td>Timestamp</td>
+  </tr>
+</table>
+
+### user
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+  </tr>
+  <tr>
+    <td>userName</td>
+    <td>string</td>
+  </tr>
+  <tr>
+    <td>createdTime</td>
+    <td>Timestamp</td>
+  </tr>
+  <tr>
+    <td>updatedTime</td>
+    <td>Timestamp</td>
+  </tr>
+</table>
