@@ -11,11 +11,11 @@ var app = express();
 
 app.get('/list_notebook', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
-  var listAllNotebooks = thunk(genNote.listAllNotebooks);
+  var listAllBooks = thunk(genNote.listAllBooks);
 
   co(function* () {
     try {
-      var books = yield listAllNotebooks.call(genNote);
+      var books = yield listAllBooks.call(genNote);
 
       books.forEach(function(value, index) {
         console.log('notebook name: ' + value.name
@@ -30,20 +30,19 @@ app.get('/list_notebook', function(req, res) {
     }
 
   })();
-
 });
 
 app.get('/get_firstnote', function(req, res) {
   var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
 
-  var listAllNotebooks = thunk(genNote.listAllNotebooks);
+  var listAllBooks = thunk(genNote.listAllBooks);
   var listNoteUidsFromBook = thunk(genNote.listNoteUidsFromBook);
   var getNote = thunk(genNote.getNote);
 
   co(function* () {
     try {
-      var books = yield listAllNotebooks.call(genNote);
-      var noteUidsList = yield listNoteUidsFromBook.call(genNote, books[0].uid);
+      var books = yield listAllBooks.call(genNote);
+      var noteUidsList = yield listNoteUidsFromBook.call(genNote, books[0].uid, 0, 20);
       var note = yield getNote.call(genNote, noteUidsList[0]);
 
       console.log('fist note title: ' + note.title + '\n');
@@ -55,7 +54,6 @@ app.get('/get_firstnote', function(req, res) {
     }
 
   })();
-
 });
 
 app.get('/get_user', function(req, res) {
@@ -74,6 +72,46 @@ app.get('/get_user', function(req, res) {
       console.log(e);
       res.send('get user err');
     }
+  })();
+});
+
+app.get('/get_notecounts', function(req, res) {
+  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var listAllBooks = thunk(genNote.listAllBooks);
+  var findNoteCounts = thunk(genNote.findNoteCounts);
+
+  co(function* () {
+    try {
+      var books = yield listAllBooks.call(genNote);
+      var counts = yield findNoteCounts.call(genNote, books[0].uid);
+
+      console.log(counts);
+      res.send('get notecounts success: ' + counts);
+    } catch (e) {
+      console.log(e);
+      res.send('get notecounts err');
+    }
+  })();
+});
+
+app.get('/get_notesmetadata', function(req, res) {
+  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var listAllBooks = thunk(genNote.listAllBooks);
+  var listNotesMetadataFromBook = thunk(genNote.listNotesMetadataFromBook);
+
+  co(function* () {
+    try {
+      var books = yield listAllBooks.call(genNote);
+      var metadata = yield listNotesMetadataFromBook.call(genNote, books[0].uid, 0, 10);
+
+      console.log(metadata);
+      res.send('get notesmetadata success: ' + metadata);
+
+    } catch (e) {
+      console.log(e);
+      res.send('get notesmetadata err');
+    }
+
   })();
 
 });

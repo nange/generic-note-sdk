@@ -7,90 +7,39 @@ NodeJs通用云笔记数据访问SDK
 
 ### note
 
-<table>
-  <tr>
-    <th>Field</th>
-    <th>Type</th>
-  </tr>
-  <tr>
-    <td>uid</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>title</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>author</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>sourceURL</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>length</td>
-    <td>int</td>
-  </tr>
-  <tr>
-    <td>createdTime</td>
-    <td>Timestamp</td>
-  </tr>
-  <tr>
-    <td>updatedTime</td>
-    <td>Timestamp</td>
-  </tr>
-  <tr>
-    <td>content</td>
-    <td>string</td>
-  </tr>
-</table>
+| Field       |    Type  |
+| :--------   | --------:|
+| uid         |   string |
+| title       |   string |
+| author      |   string |
+| sourceURL   |   string |
+| length      |      int |
+| createdTime | Timestamp|
+| updatedTime | Timestamp|
+| content     |   string |
+
+
 
 ### notebook
 
-<table>
-  <tr>
-    <th>Field</th>
-    <th>Type</th>
-  </tr>
-  <tr>
-    <td>uid</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>name</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>createdTime</td>
-    <td>Timestamp</td>
-  </tr>
-  <tr>
-    <td>updatedTime</td>
-    <td>Timestamp</td>
-  </tr>
-</table>
+| Field       |    Type  |
+| :--------   | --------:|
+| uid         |   string |
+| name        |   string |
+| createdTime | Timestamp|
+| updatedTime | Timestamp|
+
+
 
 ### user
 
-<table>
-  <tr>
-    <th>Field</th>
-    <th>Type</th>
-  </tr>
-  <tr>
-    <td>userName</td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>createdTime</td>
-    <td>Timestamp</td>
-  </tr>
-  <tr>
-    <td>updatedTime</td>
-    <td>Timestamp</td>
-  </tr>
-</table>
+| Field       |    Type  |
+| :--------   | --------:|
+| userName    |   string |
+| createdTime | Timestamp|
+| updatedTime | Timestamp|
+
+
 
 ## 安装
 
@@ -116,12 +65,21 @@ $ npm install generic-note
   * opts.withResourcesAlternateData
 
 
-### listNoteUidsFromBook(bookUid, callback(err, noteUidsList))
+### listNoteUidsFromBook(bookUid, offset, maxSize, callback(err, noteUidsList))
 
-  根据bookUid获取其下所有note uid列表。
+  根据bookUid获取其下所有note uid列表。offset为起始偏移量，maxSize为返回最大数量。
 
 
-### listAllNotebooks(callback(err, booklist))
+### listAllBooks(callback(err, booklist))
 
   获取所有notebook列表。
 
+
+### findNoteCounts(bookUid, callback(err, counts))
+
+  根据bookUid获取当前book下note总数。
+
+
+### listNotesMetadataFromBook(bookUid, offset, maxSize, callback(err, notelist))
+
+  根据bookUid获取其下note的metadata列表信息。offset为起始偏移量，maxSize为返回最大数量。
