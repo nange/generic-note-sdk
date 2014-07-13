@@ -4,8 +4,8 @@
 var co          = require('co');
 var thunk       = require('thunkify');
 var express     = require('express');
-var GenericNote = require('./lib/GenericNote');
-var config      = require('./config');
+var GenericNote = require('./../lib/GenericNote');
+var config      = require('./../config');
 
 var app = express();
 
