@@ -4,13 +4,19 @@
 var co          = require('co');
 var thunk       = require('thunkify');
 var express     = require('express');
-var GenericNote = require('./../lib/GenericNote');
-var config      = require('./../config');
+var GenericNote = require('../lib/GenericNote');
+var config      = require('./config');
 
 var app = express();
+var cookieparser = require('cookie-parser');
+var session = require('express-session');
+
+app.use(cookieparser());
+app.use(session({secret: 'generic-note'}));
+
 
 app.get('/list_notebook', function(req, res) {
-  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var genNote = GenericNote(config.devToken, 'evernote');
   var listAllBooks = thunk(genNote.listAllBooks);
 
   co(function* () {
@@ -33,7 +39,7 @@ app.get('/list_notebook', function(req, res) {
 });
 
 app.get('/get_firstnote', function(req, res) {
-  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var genNote = GenericNote(config.devToken, 'evernote');
 
   var listAllBooks = thunk(genNote.listAllBooks);
   var listNoteUidsFromBook = thunk(genNote.listNoteUidsFromBook);
@@ -57,7 +63,7 @@ app.get('/get_firstnote', function(req, res) {
 });
 
 app.get('/get_user', function(req, res) {
-  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var genNote = GenericNote(config.devToken, 'evernote');
   var getUser = thunk(genNote.getUser);
 
   co(function* () {
@@ -76,7 +82,7 @@ app.get('/get_user', function(req, res) {
 });
 
 app.get('/get_notecounts', function(req, res) {
-  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var genNote = GenericNote(config.devToken, 'evernote');
   var listAllBooks = thunk(genNote.listAllBooks);
   var findNoteCounts = thunk(genNote.findNoteCounts);
 
@@ -95,7 +101,7 @@ app.get('/get_notecounts', function(req, res) {
 });
 
 app.get('/get_notesmetadata', function(req, res) {
-  var genNote = GenericNote(config.devToken, config.SANDBOX, 'evernote');
+  var genNote = GenericNote(config.devToken, 'evernote');
   var listAllBooks = thunk(genNote.listAllBooks);
   var listNotesMetadataFromBook = thunk(genNote.listNotesMetadataFromBook);
 
@@ -116,6 +122,64 @@ app.get('/get_notesmetadata', function(req, res) {
 
 });
 
-app.listen(8000);
+app.get('/oauth', function(req, res) {
+  var OAClient = GenericNote.OAuthClient(config.consumerKey, config.consumerSecret, 'evernote');
 
-console.log('Listening on port 8000');
+  OAClient.getRequestToken(
+    config.callbackUrl,
+    function(error, oauthToken, oauthTokenSecret, results) {
+
+      if (error) {
+        req.session.error = JSON.stringify(error);
+        console.log(req.session.error);
+        res.send(req.session.error);
+
+      } else {
+        // store the tokens in the session
+        req.session.oauthToken = oauthToken;
+        req.session.oauthTokenSecret = oauthTokenSecret;
+
+        console.log('oauthToken:' + oauthToken +
+          ' oauthTokenSecret:' + oauthTokenSecret);
+
+        // redirect the user to authorize the token
+        res.redirect(OAClient.getAuthorizeUrl(oauthToken));
+      }
+
+  });
+});
+
+app.get('/oauth_callback', function(req, res) {
+  var OAClient = GenericNote.OAuthClient(config.consumerKey, config.consumerSecret, 'evernote');
+
+  OAClient.getAccessToken(
+    req.session.oauthToken,
+    req.session.oauthTokenSecret,
+    req.param('oauth_verifier'),
+    function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
+
+      if (error) {
+        req.session.error = JSON.stringify(error);
+        console.log(req.session.error);
+        res.send(req.session.error);
+
+      } else {
+        req.session.oauthAccessToken = oauthAccessToken;
+        req.session.oauthAccessTtokenSecret = oauthAccessTokenSecret;
+
+        var result = 'oauthAccessToken:' + oauthAccessToken +
+          ' oauthAccessTokenSecret:' + oauthAccessTokenSecret;
+
+        console.log(result);
+        res.send(result);
+      }
+
+    }
+  );
+
+});
+
+
+app.listen(3000);
+
+console.log('Listening on port 3000');

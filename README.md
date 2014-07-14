@@ -45,16 +45,41 @@ NodeJs通用云笔记数据访问SDK
 
 ```
 $ npm install generic-note
+
+```
+
+## 使用
+
+```
+var OAClient = GenericNote.OAuthClient(consumerKey, consumerSecret, 'evernote');
+var genNote = GenericNote(accessToken, 'evernote');
+
 ```
 
 ## API
 
-### getUser(callback(err, user))
+### OAClient.getRequestToken(callbackUrl, 
+      callback(error, oauthToken, oauthTokenSecret, results))
+
+  获取oauthToken，oauthTokenSecret
+  
+  
+### OAClient.getAuthorizeUrl(oauthToken)
+
+  返回authorize url
+  
+
+### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier, 
+      callback(error, oauthAccessToken, oauthAccessTokenSecret, results))
+      
+  获取oauthAccessToken
+
+### genNote.getUser(callback(err, user))
 
   获取当前user信息。
 
 
-### getNote(uid [,opts], callback(err, note))
+### genNote.getNote(uid [,opts], callback(err, note))
 
   根据uid获取一篇笔记内容。
   其中opts为可选参数，可传的值有：
@@ -65,21 +90,21 @@ $ npm install generic-note
   * opts.withResourcesAlternateData
 
 
-### listNoteUidsFromBook(bookUid, offset, maxSize, callback(err, noteUidsList))
+### genNote.listNoteUidsFromBook(bookUid, offset, maxSize, callback(err, noteUidsList))
 
   根据bookUid获取其下所有note uid列表。offset为起始偏移量，maxSize为返回最大数量。
 
 
-### listAllBooks(callback(err, booklist))
+### genNote.listAllBooks(callback(err, booklist))
 
   获取所有notebook列表。
 
 
-### findNoteCounts(bookUid, callback(err, counts))
+### genNote.findNoteCounts(bookUid, callback(err, counts))
 
   根据bookUid获取当前book下note总数。
 
 
-### listNotesMetadataFromBook(bookUid, offset, maxSize, callback(err, notelist))
+### genNote.listNotesMetadataFromBook(bookUid, offset, maxSize, callback(err, notelist))
 
   根据bookUid获取其下note的metadata列表信息。offset为起始偏移量，maxSize为返回最大数量。

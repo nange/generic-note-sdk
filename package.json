@@ -18,6 +18,8 @@
     "thunkify": "~2.x"
   },
   "devDependencies": {
-    "express": "4.x"
+    "express": "4.x",
+    "cookie-parser": "*",
+    "express-session": "*"
   }
 }
