@@ -43,23 +43,20 @@ NodeJs通用云笔记数据访问SDK
 
 ## 安装
 
-```
+```javascript
 $ npm install generic-note
-
 ```
 
 ## 使用
 
-```
+```javascript
 var OAClient = GenericNote.OAuthClient(consumerKey, consumerSecret, 'evernote');
 var genNote = GenericNote(accessToken, 'evernote');
-
 ```
 
 ## API
 
-### OAClient.getRequestToken(callbackUrl, 
-      callback(error, oauthToken, oauthTokenSecret, results))
+### OAClient.getRequestToken(callbackUrl, callback(error, oauthToken, oauthTokenSecret, results))
 
   获取oauthToken，oauthTokenSecret
   
@@ -69,8 +66,7 @@ var genNote = GenericNote(accessToken, 'evernote');
   返回authorize url
   
 
-### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier, 
-      callback(error, oauthAccessToken, oauthAccessTokenSecret, results))
+### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier,callback(error, oauthAccessToken, oauthAccessTokenSecret, results))
       
   获取oauthAccessToken
 
