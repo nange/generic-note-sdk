@@ -127,7 +127,7 @@ app.get('/oauth', function(req, res) {
 
   OAClient.getRequestToken(
     config.callbackUrl,
-    function(error, oauthToken, oauthTokenSecret, results) {
+    function(error, obj) {
 
       if (error) {
         req.session.error = JSON.stringify(error);
@@ -136,14 +136,14 @@ app.get('/oauth', function(req, res) {
 
       } else {
         // store the tokens in the session
-        req.session.oauthToken = oauthToken;
-        req.session.oauthTokenSecret = oauthTokenSecret;
+        req.session.oauthToken = obj.oauthToken;
+        req.session.oauthTokenSecret = obj.oauthTokenSecret;
 
-        console.log('oauthToken:' + oauthToken +
-          ' oauthTokenSecret:' + oauthTokenSecret);
+        console.log('oauthToken:' + obj.oauthToken +
+          ' oauthTokenSecret:' + obj.oauthTokenSecret);
 
         // redirect the user to authorize the token
-        res.redirect(OAClient.getAuthorizeUrl(oauthToken));
+        res.redirect(OAClient.getAuthorizeUrl(obj.oauthToken));
       }
 
   });
@@ -156,7 +156,7 @@ app.get('/oauth_callback', function(req, res) {
     req.session.oauthToken,
     req.session.oauthTokenSecret,
     req.param('oauth_verifier'),
-    function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
+    function(error, obj) {
 
       if (error) {
         req.session.error = JSON.stringify(error);
@@ -164,11 +164,11 @@ app.get('/oauth_callback', function(req, res) {
         res.send(req.session.error);
 
       } else {
-        req.session.oauthAccessToken = oauthAccessToken;
-        req.session.oauthAccessTtokenSecret = oauthAccessTokenSecret;
+        req.session.oauthAccessToken = obj.oauthAccessToken;
+        req.session.oauthAccessTtokenSecret = obj.oauthAccessTokenSecret;
 
-        var result = 'oauthAccessToken:' + oauthAccessToken +
-          ' oauthAccessTokenSecret:' + oauthAccessTokenSecret;
+        var result = 'oauthAccessToken:' + obj.oauthAccessToken +
+          ' oauthAccessTokenSecret:' + obj.oauthAccessTokenSecret;
 
         console.log(result);
         res.send(result);
