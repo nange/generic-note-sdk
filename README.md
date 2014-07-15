@@ -56,9 +56,10 @@ var genNote = GenericNote(accessToken, 'evernote');
 
 ## API
 
-### OAClient.getRequestToken(callbackUrl, callback(error, oauthToken, oauthTokenSecret, results))
+### OAClient.getRequestToken(callbackUrl, callback(error, obj))
 
   获取oauthToken，oauthTokenSecret
+  
   
   
 ### OAClient.getAuthorizeUrl(oauthToken)
@@ -66,7 +67,7 @@ var genNote = GenericNote(accessToken, 'evernote');
   返回authorize url
   
 
-### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier,callback(error, oauthAccessToken, oauthAccessTokenSecret, results))
+### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier,callback(error, obj))
       
   获取oauthAccessToken
 
