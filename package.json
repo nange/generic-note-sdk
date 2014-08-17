@@ -1,6 +1,6 @@
 {
   "name": "generic-note",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "generic note sdk",
   "main": "lib/GenericNote.js",
   "scripts": {
