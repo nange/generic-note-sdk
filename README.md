@@ -1,6 +1,7 @@
 # Generic Note Sdk
 
-NodeJs通用云笔记数据访问SDK
+NodeJs通用云笔记数据访问SDK, 为云笔记提供一个统一数据访问接口，
+支持印象笔记（国际版、中国版）、有道云笔记等常用云笔记。目前暂时只支持印象笔记。
 
 
 ## 数据结构
@@ -35,7 +36,8 @@ NodeJs通用云笔记数据访问SDK
 
 | Field       |    Type  |
 | :--------   | --------:|
-| userName    |   string |
+| id          |   string |
+| name        |   string |
 | createdTime | Timestamp|
 | updatedTime | Timestamp|
 
@@ -59,16 +61,16 @@ var genNote = GenericNote(accessToken, 'evernote');
 ### OAClient.getRequestToken(callbackUrl, callback(error, obj))
 
   获取oauthToken，oauthTokenSecret
-  
-  
-  
+
+
+
 ### OAClient.getAuthorizeUrl(oauthToken)
 
   返回authorize url
-  
+
 
 ### OAClient.getAccessToken(oauthToken, oauthTokenSecret, oauthVerifier,callback(error, obj))
-      
+
   获取oauthAccessToken
 
 ### genNote.getUser(callback(err, user))
